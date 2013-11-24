@@ -8,9 +8,6 @@ public class HelloWorld {
 	
 		Welcomer welcomer = new Welcomer();
 		welcomer.sayHello();
-
-		
-		
 		
 	}
 	
