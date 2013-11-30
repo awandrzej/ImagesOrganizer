@@ -30,7 +30,6 @@ public class ImageData {
 	public static String getImageInfo (String path) { 
 		
 		String dateOrg ="",dateMod = "";
-
 		try
         {
             File jpgFile = new File( path );
