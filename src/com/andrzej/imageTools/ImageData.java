@@ -25,15 +25,16 @@ public class ImageData {
 		
     
     }
-	
-	
+
 	public static String getImageInfo (String path) { 
 		
 		String dateOrg ="",dateMod = "";
 		try
         {
             File jpgFile = new File( path );
+            
             Metadata metadata = ImageMetadataReader.readMetadata( jpgFile );
+            
             Directory directory = metadata.getDirectory( ExifDirectory.class );
             if( directory != null )
             {
@@ -48,7 +49,6 @@ public class ImageData {
                     if (tag.getTagName().equals("Date/Time")) {
                     	dateMod = tag.getDescription().replace(":", "-").replace(" ", "-");
                     }
-                    
                     
                     if (!dateOrg.equals(dateMod) && dateOrg.length()>1){
                     filename = dateOrg.trim()+"_"+dateMod.trim();
@@ -65,6 +65,7 @@ public class ImageData {
         catch( Exception e )
         {
             e.printStackTrace();
+            System.out.println (path);
         }
 		return filename;
 	}
