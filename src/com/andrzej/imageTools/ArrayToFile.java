@@ -1,6 +1,8 @@
 package com.andrzej.imageTools;
 
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,12 +18,14 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.imageio.ImageIO;
 
 import com.andrzej.imageTools.ImageData;
 
 
 public class ArrayToFile {
 	List <String> listImg = new ArrayList<String>();
+	List <String> listImgSort = new ArrayList<String>();
 	List<String> zoom2 = new ArrayList<>();
 	String mainPath ="Z:\\Pictures\\";
 	ImageData imageData;
@@ -42,6 +46,7 @@ public class ArrayToFile {
     public void listFilesAndFilesSubDirectories(String directoryName){
         File directory = new File(directoryName);
         File[] fList = directory.listFiles();
+        
         for (File file : fList){
             
                     	
@@ -51,25 +56,38 @@ public class ArrayToFile {
             } else if (file.isDirectory()){
                 listFilesAndFilesSubDirectories(file.getAbsolutePath());
             }
+        	
         }
     }
     
     
     private void listAmount() {
-    	System.out.println(listImg.size());
+    	System.out.println("files to process: "+listImg.size());
     	for (int i = 0; i<listImg.size();i++){
-    		
     		String oldName = listImg.get(i);
-
+    		/*System.out.println(oldName);
+    		boolean isimage=false;
+            try{
+                    BufferedImage bi=ImageIO.read(new File(oldName));
+                    if (bi!=null)isimage=true;
+            }catch(Exception e){
+                    isimage=false;
+                    System.out.println("The file"+oldName+"could not be opened , an error occurred.");
+            }*/
+            //System.out.println(oldName);
     		String newName = ImageData.getImageInfo(oldName);
-
     		listImg.set(i, newName+";"+oldName);
-        	
+    		
     		}
     }
     
     private void listSort() {
+    	System.out.println("sortowanie");
     	Collections.sort(listImg);
+    	
+    	for (int i=0; i<1000; i++){
+    		System.out.println(listImg.get(i));
+    	}
     }
     
     public void getData (){
