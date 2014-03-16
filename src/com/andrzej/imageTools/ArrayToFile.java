@@ -32,7 +32,7 @@ public class ArrayToFile {
     public static void main (String[] args) throws IOException{
     	 
         ArrayToFile listFilesUtil = new ArrayToFile();
-        final String directoryWindows ="D://Pictures";
+        final String directoryWindows ="D://Pictures//Skarbek Miny";
         listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
         listFilesUtil.listAmount();
         listFilesUtil.listSort();
@@ -63,6 +63,7 @@ public class ArrayToFile {
     
     private void listAmount() {
     	System.out.println("files to process: "+listImg.size());
+    	
     	for (int i = 0; i<listImg.size();i++){
     		String oldName = listImg.get(i);
     		/*System.out.println(oldName);
@@ -75,8 +76,16 @@ public class ArrayToFile {
                     System.out.println("The file"+oldName+"could not be opened , an error occurred.");
             }*/
             //System.out.println(oldName);
-    		String newName = ImageData.getImageInfo(oldName);
+    		
+    		
+    		//String newName = (ImageData.getImageInfo(oldName)).replace("-", "") +"_" + Integer.toString(i)  ;
+    		String s = (oldName.replaceAll("D:\\\\P.*\\\\", ""));
+    		s=s.toLowerCase().replaceAll("\\.j.*", "");
+    		
+    		String newName = (ImageData.getImageInfo(oldName)).replace("-", "") +"_" + s;
     		listImg.set(i, newName+";"+oldName);
+    		
+    		
     		
     		}
     }
@@ -85,7 +94,7 @@ public class ArrayToFile {
     	System.out.println("sortowanie");
     	Collections.sort(listImg);
     	
-    	for (int i=0; i<1000; i++){
+    	for (int i=0; i<100; i++){
     		System.out.println(listImg.get(i));
     	}
     }
