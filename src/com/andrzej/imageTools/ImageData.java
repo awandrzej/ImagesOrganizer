@@ -1,6 +1,5 @@
 package com.andrzej.imageTools;
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 
 import com.drew.imaging.ImageMetadataReader;
@@ -12,19 +11,6 @@ import com.drew.metadata.exif.ExifDirectory;
 public class ImageData {
 	 
 	static String filename;
-    
-    /**
-     * List all files from a directory and its subdirectories
-     * @param directoryName to be listed
-     */
-    
-	public static void main (String[] args) throws IOException{
-				
-		String newfilename = getImageInfo("D:\\Pictures\\16042005NowiWGosciach\\2005-04-16 031.jpg");
-		System.out.println ("-->" + newfilename);
-		
-    
-    }
 
 	public static String getImageInfo (String path) { 
 		
