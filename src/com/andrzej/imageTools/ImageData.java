@@ -29,7 +29,8 @@ public class ImageData {
                 {
                 	
                 	Tag tag = ( Tag )i.next();
-                    if (tag.getTagName().equals("Date/Time Original")) { 
+                    
+                	if (tag.getTagName().equals("Date/Time Original")) { 
                     	dateOrg = tag.getDescription().replace(":", "-").replace(" ", "-");
                     } 
                     if (tag.getTagName().equals("Date/Time")) {
