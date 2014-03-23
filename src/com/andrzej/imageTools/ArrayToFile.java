@@ -18,7 +18,7 @@ public class ArrayToFile {
 	List<String> listImg = new ArrayList<String>();
 	List<String> listImgSort = new ArrayList<String>();
 	List<String> zoom2 = new ArrayList<>();
-	String mainPath = "G:\\Pictures\\";
+	String mainPath = "C:\\Pi\\";
 	ImageData imageData;
 
 	public static void main(String[] args) throws IOException {
@@ -45,8 +45,14 @@ public class ArrayToFile {
 		for (File file : fList) {
 
 			if (file.isFile()
-					&& (file.toString().toLowerCase().contains(".jpg") || file
-							.toString().toLowerCase().contains(".jpeg"))) {
+					&& (/*file.toString().toLowerCase().contains(".jpg")  || file
+							.toString().toLowerCase().contains(".jpeg") ||
+							file.toString().toLowerCase().contains(".mpg") || 
+							file.toString().toLowerCase().contains(".avi") || */
+							file.toString().toLowerCase().contains(".mp4")
+							
+							
+									)) {
 				listImg.add(file.getAbsolutePath().toString());
 			} else if (file.isDirectory()) {
 				listFilesAndFilesSubDirectories(file.getAbsolutePath());
@@ -58,12 +64,20 @@ public class ArrayToFile {
 	private void listAmount() {
 		System.out.println("files to process: " + listImg.size());
 
-		for (int i = 0; i < listImg.size(); i++) {
+		for (int i = 0; i < listImg.size() ; i++) {
 			String oldName = listImg.get(i);
 			String s = (oldName.replaceAll("D:\\\\P.*\\\\", ""));
 			s = s.toLowerCase().replaceAll("\\.j.*", "");
-			String newName = (ImageData.getImageInfo(oldName)).replace("-", "")
+			
+			String newName; 
+			if(oldName.toLowerCase().contains(".mp4")){
+			newName = (ImageData.getMovieInfo(oldName)).replace("-", "")
 					+ "_" + s;
+			
+			}else { 			
+			newName = (ImageData.getImageInfo(oldName)).replace("-", "")
+					+ "_" + s;
+			}
 			listImg.set(i, newName + ";" + oldName);
 
 		}
@@ -84,14 +98,22 @@ public class ArrayToFile {
 			String oldName = nameList.get(1);
 			String newName = nameList.get(0);
 
-			if (oldName.toLowerCase().contains(".jpg")
-					|| oldName.toLowerCase().contains(".jpeg")) {
+			
+			if (	   oldName.toLowerCase().contains(".jpg")
+					|| oldName.toLowerCase().contains(".jpeg")
+					|| oldName.toLowerCase().contains(".mpg")
+					|| oldName.toLowerCase().contains(".avi")
+					|| oldName.toLowerCase().contains(".mp4")
+					) {
+				
 				Path source = Paths.get(oldName);
 
 				File theDir;
 				Path target;
 				theDir = new File(mainPath + newName.substring(0, 4));
-				target = Paths.get(theDir + "\\" + newName + ".jpg");
+				
+				//target = Paths.get(theDir + "\\" + newName + ".jpg");
+				target = Paths.get(theDir + "\\" + newName);
 				if (!theDir.exists()) {
 					System.out.println("creating directory: " + theDir);
 					boolean result = theDir.mkdir();
@@ -100,8 +122,8 @@ public class ArrayToFile {
 					}
 				}
 
-				if (!source.toString().toLowerCase().contains("flipsharevideo")){
-					Files.copy(source, target, REPLACE_EXISTING);	
+				if (source.toString().toLowerCase().contains(".mp4")){
+					Files.copy(source, target ,REPLACE_EXISTING);	
 				}
 				i++;
 				msg = ("no-" + Integer.toString(i) + ": " + source + "-->" + target);

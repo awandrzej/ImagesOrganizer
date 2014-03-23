@@ -1,5 +1,6 @@
 package com.andrzej.imageTools;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
 import com.drew.imaging.ImageMetadataReader;
@@ -13,6 +14,7 @@ public class ImageData {
 	static String filename;
 
 	public static String getImageInfo (String path) { 
+		
 		
 		String dateOrg ="",dateMod = "";
 		try
@@ -56,6 +58,19 @@ public class ImageData {
         }
 		return filename;
 	}
+	
+	
+	public static String getMovieInfo(String path) {
+
+		File file = new File(path);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		filename = (sdf.format(file.lastModified()));
+
+		return filename;
+		
+	}
+	
 }
     
  
