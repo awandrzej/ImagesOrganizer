@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ArrayToFile {
+	public class ArrayToFile {
 	List<String> listImg = new ArrayList<String>();
 	List<String> listImgSort = new ArrayList<String>();
 	List<String> zoom2 = new ArrayList<>();
@@ -24,7 +24,7 @@ public class ArrayToFile {
 	public static void main(String[] args) throws IOException {
 		
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		final String directoryWindows = "D://Pictures//2005-05-22-1529-05";
+		final String directoryWindows = "D://Pictures//";
 		listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
 		listFilesUtil.listAmount();
 		listFilesUtil.listSort();
@@ -98,6 +98,7 @@ public class ArrayToFile {
 			if (	   oldName.toLowerCase().contains(".jpg")
 					|| oldName.toLowerCase().contains(".jpeg")
 					|| oldName.toLowerCase().contains(".mpg")
+					|| oldName.toLowerCase().contains(".mpeg")
 					|| oldName.toLowerCase().contains(".avi")
 					|| oldName.toLowerCase().contains(".mp4")
 					) {
@@ -117,13 +118,13 @@ public class ArrayToFile {
 					}
 				}
 
-				if (source.toString().toLowerCase().contains("FlipShare Data\\Previews")){
+				if (!source.toString().toLowerCase().contains("FlipShare Data\\Previews")){
 					Files.copy(source, target ,REPLACE_EXISTING);	
 				}
 				i++;
 				msg = ("no-" + Integer.toString(i) + ": " + source + "-->" + target);
 				logToFile(msg);
-				System.out.println(i + " files of " + listImg.size());
+				System.out.println(i + " files of " + listImg.size()+" " +msg);
 			}
 		}
 	}
