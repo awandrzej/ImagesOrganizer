@@ -24,7 +24,7 @@ public class ArrayToFile {
 	public static void main(String[] args) throws IOException {
 		
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		final String directoryWindows = "D://Pictures//";
+		final String directoryWindows = "D://Pictures//2005-05-22-1529-05";
 		listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
 		listFilesUtil.listAmount();
 		listFilesUtil.listSort();
@@ -43,15 +43,12 @@ public class ArrayToFile {
 		File[] fList = directory.listFiles();
 
 		for (File file : fList) {
-
 			if (file.isFile()
-					&& (/*file.toString().toLowerCase().contains(".jpg")  || file
-							.toString().toLowerCase().contains(".jpeg") ||
-							file.toString().toLowerCase().contains(".mpg") || 
-							file.toString().toLowerCase().contains(".avi") || */
-							file.toString().toLowerCase().contains(".mp4")
-							
-							
+					&& (	file.toString().toLowerCase().contains(".jpg")  
+							|| file.toString().toLowerCase().contains(".jpeg") 
+							|| file.toString().toLowerCase().contains(".mpg") 
+							|| file.toString().toLowerCase().contains(".avi")
+							|| file.toString().toLowerCase().contains(".mp4") 
 									)) {
 				listImg.add(file.getAbsolutePath().toString());
 			} else if (file.isDirectory()) {
@@ -66,8 +63,7 @@ public class ArrayToFile {
 
 		for (int i = 0; i < listImg.size() ; i++) {
 			String oldName = listImg.get(i);
-			String s = (oldName.replaceAll("D:\\\\P.*\\\\", ""));
-			s = s.toLowerCase().replaceAll("\\.j.*", "");
+			String s = (oldName.replaceAll("D:\\\\P.*\\\\", "").toLowerCase());
 			
 			String newName; 
 			if(oldName.toLowerCase().contains(".mp4")){
@@ -112,7 +108,6 @@ public class ArrayToFile {
 				Path target;
 				theDir = new File(mainPath + newName.substring(0, 4));
 				
-				//target = Paths.get(theDir + "\\" + newName + ".jpg");
 				target = Paths.get(theDir + "\\" + newName);
 				if (!theDir.exists()) {
 					System.out.println("creating directory: " + theDir);
@@ -122,7 +117,7 @@ public class ArrayToFile {
 					}
 				}
 
-				if (source.toString().toLowerCase().contains(".mp4")){
+				if (source.toString().toLowerCase().contains("FlipShare Data\\Previews")){
 					Files.copy(source, target ,REPLACE_EXISTING);	
 				}
 				i++;
