@@ -15,16 +15,16 @@ import java.util.Collections;
 import java.util.List;
 
 	public class ArrayToFile {
-	List<String> listImg = new ArrayList<String>();
-	List<String> listImgSort = new ArrayList<String>();
-	List<String> zoom2 = new ArrayList<>();
-	String mainPath = "C:\\Pi\\";
-	ImageData imageData;
+	List<String> listImg = new ArrayList<>();
+	//List<String> listImgSort = new ArrayList<String>();
+	//List<String> zoom2 = new ArrayList<>();
+	String mainPath = "C://PhotoMigration//";
+	//ImageData imageData;
 
 	public static void main(String[] args) throws IOException {
 		
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		final String directoryWindows = "D://Pictures//";
+		final String directoryWindows = "E://Pictures//2008-03-16 Tata";
 		listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
 		listFilesUtil.listAmount();
 		listFilesUtil.listSort();
@@ -63,17 +63,17 @@ import java.util.List;
 
 		for (int i = 0; i < listImg.size() ; i++) {
 			String oldName = listImg.get(i);
-			String s = (oldName.replaceAll("D:\\\\P.*\\\\", "").toLowerCase());
+			String s = (oldName.replaceAll("E:\\\\P.*\\\\", "").toLowerCase());
 			
 			String newName; 
 			if(oldName.toLowerCase().contains(".mp4")){
 			newName = (ImageData.getMovieInfo(oldName)).replace("-", "")
 					+ "_" + s;
-			
-			}else { 			
+			}else {
 			newName = (ImageData.getImageInfo(oldName)).replace("-", "")
 					+ "_" + s;
 			}
+            newName = newName.replace(" ", "_");
 			listImg.set(i, newName + ";" + oldName);
 
 		}
