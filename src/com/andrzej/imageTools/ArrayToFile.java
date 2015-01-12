@@ -16,18 +16,18 @@ import java.util.List;
 
 	public class ArrayToFile {
 	List<String> listImg = new ArrayList<>();
-	//List<String> listImgSort = new ArrayList<String>();
-	//List<String> zoom2 = new ArrayList<>();
-	String mainPath = "C://PhotoMigration//";
-	//ImageData imageData;
+	String mainPath = "F://PhotoMigration//";
 
 	public static void main(String[] args) throws IOException {
 		
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		final String directoryWindows = "E://Pictures//2008-03-16 Tata";
+		//final String directoryWindows = "E://Pictures//2008-10-24 Natalka 20081020//";
+        final String directoryWindows = "E://Pictures//2009-07-14//";
 		listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
+        listFilesUtil.listSort();
 		listFilesUtil.listAmount();
-		listFilesUtil.listSort();
+
+
 		listFilesUtil.getData_old();
 
 	}
@@ -44,13 +44,15 @@ import java.util.List;
 
 		for (File file : fList) {
 			if (file.isFile()
-					&& (	file.toString().toLowerCase().contains(".jpg")  
-							|| file.toString().toLowerCase().contains(".jpeg") 
-							|| file.toString().toLowerCase().contains(".mpg") 
-							|| file.toString().toLowerCase().contains(".avi")
-							|| file.toString().toLowerCase().contains(".mp4") 
+					&& (
+                               file.toString().toLowerCase().contains(".jpg")
+							|| file.toString().toLowerCase().contains(".jpeg")
+					//		|| file.toString().toLowerCase().contains(".mpg")
+                    //        || file.toString().toLowerCase().contains(".mpeg")
+					//		|| file.toString().toLowerCase().contains(".avi")
+					//		|| file.toString().toLowerCase().contains(".mp4")
 									)) {
-				listImg.add(file.getAbsolutePath().toString());
+			listImg.add(file.getAbsolutePath().toString());
 			} else if (file.isDirectory()) {
 				listFilesAndFilesSubDirectories(file.getAbsolutePath());
 			}
@@ -62,18 +64,28 @@ import java.util.List;
 		System.out.println("files to process: " + listImg.size());
 
 		for (int i = 0; i < listImg.size() ; i++) {
+
+            String miniCounter;
+            miniCounter = Integer.toString(i);
+            miniCounter = miniCounter.substring(miniCounter.length()-1);
+
 			String oldName = listImg.get(i);
-			String s = (oldName.replaceAll("E:\\\\P.*\\\\", "").toLowerCase());
-			
-			String newName; 
+
+            String s = (oldName.replaceAll("E:\\\\P.*\\\\", "").toLowerCase());
+
+			String newName;
 			if(oldName.toLowerCase().contains(".mp4")){
 			newName = (ImageData.getMovieInfo(oldName)).replace("-", "")
-					+ "_" + s;
+					+ "_"+ miniCounter + s;
 			}else {
 			newName = (ImageData.getImageInfo(oldName)).replace("-", "")
-					+ "_" + s;
+					+ "_"+ miniCounter + s;
 			}
+
+
+            System.out.println(newName);
             newName = newName.replace(" ", "_");
+
 			listImg.set(i, newName + ";" + oldName);
 
 		}
@@ -97,10 +109,10 @@ import java.util.List;
 			
 			if (	   oldName.toLowerCase().contains(".jpg")
 					|| oldName.toLowerCase().contains(".jpeg")
-					|| oldName.toLowerCase().contains(".mpg")
-					|| oldName.toLowerCase().contains(".mpeg")
-					|| oldName.toLowerCase().contains(".avi")
-					|| oldName.toLowerCase().contains(".mp4")
+			//		|| oldName.toLowerCase().contains(".mpg")
+			//		|| oldName.toLowerCase().contains(".mpeg")
+			//		|| oldName.toLowerCase().contains(".avi")
+			//		|| oldName.toLowerCase().contains(".mp4")
 					) {
 				
 				Path source = Paths.get(oldName);
