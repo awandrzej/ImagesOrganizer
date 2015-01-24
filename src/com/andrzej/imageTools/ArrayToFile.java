@@ -16,19 +16,19 @@ import java.util.List;
 
 	public class ArrayToFile {
 	List<String> listImg = new ArrayList<>();
+	List<String> listImgNew = new ArrayList<>();
 	String mainPath = "F://PhotoMigration//";
 
 	public static void main(String[] args) throws IOException {
 		
 		ArrayToFile listFilesUtil = new ArrayToFile();
 		//final String directoryWindows = "E://Pictures//2008-10-24 Natalka 20081020//";
-        final String directoryWindows = "E://Pictures//2009-07-14//";
+        final String directoryWindows = "E://Pictures//";
 		listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
         listFilesUtil.listSort();
 		listFilesUtil.listAmount();
-
-
 		listFilesUtil.getData_old();
+
 
 	}
 
@@ -65,10 +65,6 @@ import java.util.List;
 
 		for (int i = 0; i < listImg.size() ; i++) {
 
-            String miniCounter;
-            miniCounter = Integer.toString(i);
-            miniCounter = miniCounter.substring(miniCounter.length()-1);
-
 			String oldName = listImg.get(i);
 
             String s = (oldName.replaceAll("E:\\\\P.*\\\\", "").toLowerCase());
@@ -76,17 +72,23 @@ import java.util.List;
 			String newName;
 			if(oldName.toLowerCase().contains(".mp4")){
 			newName = (ImageData.getMovieInfo(oldName)).replace("-", "")
-					+ "_"+ miniCounter + s;
+					+ "_" + s;
 			}else {
 			newName = (ImageData.getImageInfo(oldName)).replace("-", "")
-					+ "_"+ miniCounter + s;
+					+ "_" + s;
 			}
 
-
-            System.out.println(newName);
             newName = newName.replace(" ", "_");
+			//System.out.println(newName);
 
-			listImg.set(i, newName + ";" + oldName);
+			if (Collections.frequency(listImgNew, newName)>0) {
+				newName = newName.replace(".jpg","_"+Integer.toString(Collections.frequency(listImgNew, newName))+".jpg");
+			}
+
+			listImg.set(i, newName
+							+ ";"
+							+ oldName);
+			listImgNew.add(newName);
 
 		}
 	}
@@ -94,6 +96,7 @@ import java.util.List;
 	private void listSort() {
 		System.out.println("sortowanie");
 		Collections.sort(listImg);
+
 	}
 
 	private void getData_old() throws IOException {
