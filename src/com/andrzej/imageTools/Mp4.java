@@ -4,7 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 
 public class Mp4 {
-
+/*
 	public static void main(String[] args) {
 
 		File file = new File("D:\\Pictures\\FlipSharevideo\\FlipShare Data (2)\\Videos\\VID00037.mp4");
@@ -19,5 +19,5 @@ public class Mp4 {
 		System.out.println("After Format : " + sdf.format(file.lastModified()));
 	
 	}
-
+*/
 }

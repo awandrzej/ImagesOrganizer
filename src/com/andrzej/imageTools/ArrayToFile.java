@@ -18,8 +18,11 @@ import java.util.List;
 	public class ArrayToFile {
 	List<String> listImg = new ArrayList<>();
 	List<String> listImgNew = new ArrayList<>();
-	String mainPathVideos = "D://VideoMigration//";
-	String mainPathPictures = "D://PhotoMigration//";
+	String srcDrive;
+	String dstDrive;
+	String mainPathVideos;
+	String mainPathPictures;
+
 	String finalPath;
 
 	public static void main(String[] args) throws IOException {
@@ -27,19 +30,54 @@ import java.util.List;
 		//-Dmyvar String context = System.getProperty("myvar");
 
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		String directoryWindows;
-		if (args.length==0){
-			directoryWindows = "D://Pictures//100CANON//";
-		}else{
-			directoryWindows = args[0];
+		String srcDirectory = null;
+		String dstDirectory = null;
+
+		try {
+			srcDirectory = args[0];
+		}catch (ArrayIndexOutOfBoundsException e){
+			System.out.println("Source directory must be provided!");
+			System.out.println("for example: java -jar ImagesOrganizer.jar D:\\MyImagesToOrganizeFolder C,D,E - provide only drive letter");
+			System.exit(1);
 		}
-		listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
+
+		try {
+			dstDirectory = args[1];
+			listFilesUtil.setupDirectories(dstDirectory, srcDirectory);
+		}catch (ArrayIndexOutOfBoundsException e){
+			System.out.println("Destination directory only 1st letter must be provided eg. C");
+			System.out.println("for example: java -jar ImagesOrganizer.jar D:\\MyImagesToOrganizeFolder C,D,E - provide only drive letter");
+			System.exit(1);
+		}
+
+
+		listFilesUtil.listFilesAndFilesSubDirectories(srcDirectory);
         listFilesUtil.listSort();
 		listFilesUtil.listAmount();
 		listFilesUtil.getData_old();
 
-
 	}
+
+	public void setupDirectories(String dstDir, String srcDir) {
+		srcDrive = srcDir.substring(0, 1);
+		dstDrive = dstDir.substring(0, 1);
+		mainPathVideos = dstDrive + "://VideoMigration//";
+		mainPathPictures = dstDrive + "://PhotoMigration//";
+
+		File destDir;
+		destDir = new File(mainPathPictures);
+		if (!destDir.exists()) {
+			System.out.println("creating directory: " + destDir);
+			boolean result = destDir.mkdir();
+		}
+		destDir = new File(mainPathVideos);
+		if (!destDir.exists()) {
+			System.out.println("creating directory: " + destDir);
+			boolean result = destDir.mkdir();
+		}
+	}
+
+
 
 	/**
 	 * List all files from a directory and its subdirectories
@@ -47,6 +85,7 @@ import java.util.List;
 	 * @param directoryName
 	 *            to be listed
 	 */
+
 	public void listFilesAndFilesSubDirectories(String directoryName) {
 		File directory = new File(directoryName);
 		File[] fList = directory.listFiles();
@@ -81,7 +120,7 @@ import java.util.List;
 			Utils.percentCounter(i,listImg.size());
 
 			//System.out.println(oldName);
-            String s = (oldName.replaceAll("D:\\\\P.*\\\\", "").toLowerCase());
+            String s = (oldName.replaceAll(srcDrive+":\\\\P.*\\\\", "").toLowerCase());
 
 			String newName;
 			if(		  oldName.toLowerCase().contains(".mp4")
@@ -120,26 +159,13 @@ import java.util.List;
 
 	private void getData_old() throws IOException {
 		int i = 0;
-
-
-/*  to remove
-		System.out.println("img:" +listImg.size());
-		for (int j=0; j<579; j++){
-			listImg.remove(0);
-		}
-		System.out.println("img:" +listImg.size());
-*/
-
-
 		for (String object : listImg) {
-
 			String msg = "";
 
 			List<String> nameList = Arrays.asList(object.split(";"));
 			String oldName = nameList.get(1);
 			String newName = nameList.get(0);
 
-			
 			if (	   oldName.toLowerCase().contains(".jpg")
 					|| oldName.toLowerCase().contains(".jpeg")
 					|| oldName.toLowerCase().contains(".mpg")
