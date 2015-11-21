@@ -18,8 +18,10 @@ import java.util.List;
 	public class ArrayToFile {
 	List<String> listImg = new ArrayList<>();
 	List<String> listImgNew = new ArrayList<>();
-	String mainPathVideos = "D://VideoMigration//";
-	String mainPathPictures = "D://PhotoMigration//";
+	String destination;
+	String mainPathVideos;
+	String mainPathPictures;
+
 	String finalPath;
 
 	public static void main(String[] args) throws IOException {
@@ -27,19 +29,40 @@ import java.util.List;
 		//-Dmyvar String context = System.getProperty("myvar");
 
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		String directoryWindows;
-		if (args.length==0){
-			directoryWindows = "D://Pictures//100CANON//";
-		}else{
+		String directoryWindows = null;
+
+		try {
 			directoryWindows = args[0];
+		}catch (ArrayIndexOutOfBoundsException e){
+			System.out.println("Source directory must be provided!");
+			System.out.println("for example: java -jar ImagesOrganizer.jar D:\\MyImagesToOrganizeFolder C,D,E - provide only drive letter");
+			System.exit(1);
 		}
+
+		try {
+			listFilesUtil.setupDirectories(args[1]);
+		}catch (ArrayIndexOutOfBoundsException e){
+			System.out.println("Destination directory only 1st letter must be provided eg. C");
+			System.out.println("for example: java -jar ImagesOrganizer.jar D:\\MyImagesToOrganizeFolder C,D,E - provide only drive letter");
+			System.exit(1);
+		}
+
 		listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
         listFilesUtil.listSort();
 		listFilesUtil.listAmount();
 		listFilesUtil.getData_old();
 
-
 	}
+
+
+
+	public void setupDirectories(String drive){
+		mainPathVideos = drive+"://VideoMigration//";
+		mainPathPictures = drive+"://PhotoMigration//";
+	}
+
+
+
 
 	/**
 	 * List all files from a directory and its subdirectories
@@ -47,6 +70,7 @@ import java.util.List;
 	 * @param directoryName
 	 *            to be listed
 	 */
+
 	public void listFilesAndFilesSubDirectories(String directoryName) {
 		File directory = new File(directoryName);
 		File[] fList = directory.listFiles();
@@ -120,26 +144,13 @@ import java.util.List;
 
 	private void getData_old() throws IOException {
 		int i = 0;
-
-
-/*  to remove
-		System.out.println("img:" +listImg.size());
-		for (int j=0; j<579; j++){
-			listImg.remove(0);
-		}
-		System.out.println("img:" +listImg.size());
-*/
-
-
 		for (String object : listImg) {
-
 			String msg = "";
 
 			List<String> nameList = Arrays.asList(object.split(";"));
 			String oldName = nameList.get(1);
 			String newName = nameList.get(0);
 
-			
 			if (	   oldName.toLowerCase().contains(".jpg")
 					|| oldName.toLowerCase().contains(".jpeg")
 					|| oldName.toLowerCase().contains(".mpg")
