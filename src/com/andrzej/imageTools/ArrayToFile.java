@@ -1,3 +1,4 @@
+
 package com.andrzej.imageTools;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -22,14 +23,21 @@ import java.util.List;
 	String finalPath;
 
 	public static void main(String[] args) throws IOException {
-		
-		ArrayToFile listFilesUtil = new ArrayToFile();
-		final String directoryWindows = "D://Pictures//100CANON//";
 
+		//-Dmyvar String context = System.getProperty("myvar");
+
+		ArrayToFile listFilesUtil = new ArrayToFile();
+		String directoryWindows;
+		if (args.length==0){
+			directoryWindows = "D://Pictures//100CANON//";
+		}else{
+			directoryWindows = args[0];
+		}
 		listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
         listFilesUtil.listSort();
 		listFilesUtil.listAmount();
 		listFilesUtil.getData_old();
+
 
 	}
 
