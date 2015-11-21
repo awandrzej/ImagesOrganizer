@@ -20,7 +20,7 @@ public class ImageData {
 		try
         {
             File jpgFile = new File( path );
-            
+
             Metadata metadata = ImageMetadataReader.readMetadata( jpgFile );
             
             Directory directory = metadata.getDirectory( ExifDirectory.class );
@@ -43,7 +43,8 @@ public class ImageData {
                     filename = dateOrg.trim()+"_"+dateMod.trim();
                     } else {
                     	filename = dateOrg.trim();	
-                    } 
+                    }
+                    filename = filename +"_"+ String.valueOf((jpgFile.length()/1024));
                 }
             }
             else
@@ -56,7 +57,8 @@ public class ImageData {
             e.printStackTrace();
             System.out.println (path);
         }
-		return filename;
+
+        return filename;
 	}
 	
 	
@@ -65,7 +67,7 @@ public class ImageData {
 		File file = new File(path);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-		filename = (sdf.format(file.lastModified()));
+		filename = (sdf.format(file.lastModified())+"_"+String.valueOf((file.length()/1024)));
 
 		return filename;
 		

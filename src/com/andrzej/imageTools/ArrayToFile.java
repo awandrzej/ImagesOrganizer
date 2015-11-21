@@ -17,18 +17,19 @@ import java.util.List;
 	public class ArrayToFile {
 	List<String> listImg = new ArrayList<>();
 	List<String> listImgNew = new ArrayList<>();
-	String mainPath = "F://PhotoMigration//";
+	String mainPathVideos = "D://VideoMigration//";
+	String mainPathPictures = "D://PhotoMigration//";
+	String finalPath;
 
 	public static void main(String[] args) throws IOException {
 		
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		//final String directoryWindows = "E://Pictures//2008-10-24 Natalka 20081020//";
-        final String directoryWindows = "E://Pictures//";
+		final String directoryWindows = "D://Pictures//100CANON//";
+
 		listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
         listFilesUtil.listSort();
 		listFilesUtil.listAmount();
 		listFilesUtil.getData_old();
-
 
 	}
 
@@ -45,14 +46,16 @@ import java.util.List;
 		for (File file : fList) {
 			if (file.isFile()
 					&& (
-                               file.toString().toLowerCase().contains(".jpg")
-							|| file.toString().toLowerCase().contains(".jpeg")
-					//		|| file.toString().toLowerCase().contains(".mpg")
-                    //        || file.toString().toLowerCase().contains(".mpeg")
-					//		|| file.toString().toLowerCase().contains(".avi")
-					//		|| file.toString().toLowerCase().contains(".mp4")
-									)) {
-			listImg.add(file.getAbsolutePath().toString());
+					file.toString().toLowerCase().contains(".jpg")
+					||file.toString().toLowerCase().contains(".jpeg")
+					||file.toString().toLowerCase().contains(".mpg")
+                    ||file.toString().toLowerCase().contains(".mpeg")
+					||file.toString().toLowerCase().contains(".avi")
+					||file.toString().toLowerCase().contains(".mp4")
+					||file.toString().toLowerCase().contains(".wmv")
+					||file.toString().toLowerCase().contains(".mov")
+			)) {
+				listImg.add(file.getAbsolutePath().toString());
 			} else if (file.isDirectory()) {
 				listFilesAndFilesSubDirectories(file.getAbsolutePath());
 			}
@@ -62,15 +65,23 @@ import java.util.List;
 
 	private void listAmount() {
 		System.out.println("files to process: " + listImg.size());
-
+		System.out.println("start convert names... " );
 		for (int i = 0; i < listImg.size() ; i++) {
 
 			String oldName = listImg.get(i);
 
-            String s = (oldName.replaceAll("E:\\\\P.*\\\\", "").toLowerCase());
+			Utils.percentCounter(i,listImg.size());
+
+			//System.out.println(oldName);
+            String s = (oldName.replaceAll("D:\\\\P.*\\\\", "").toLowerCase());
 
 			String newName;
-			if(oldName.toLowerCase().contains(".mp4")){
+			if(		  oldName.toLowerCase().contains(".mp4")
+					||oldName.toLowerCase().contains(".avi")
+					||oldName.toLowerCase().contains(".wmv")
+					||oldName.toLowerCase().contains(".mov")
+					||oldName.toLowerCase().contains(".mpg")
+					||oldName.toLowerCase().contains(".mpeg")){
 			newName = (ImageData.getMovieInfo(oldName)).replace("-", "")
 					+ "_" + s;
 			}else {
@@ -101,6 +112,17 @@ import java.util.List;
 
 	private void getData_old() throws IOException {
 		int i = 0;
+
+
+/*  to remove
+		System.out.println("img:" +listImg.size());
+		for (int j=0; j<579; j++){
+			listImg.remove(0);
+		}
+		System.out.println("img:" +listImg.size());
+*/
+
+
 		for (String object : listImg) {
 
 			String msg = "";
@@ -112,19 +134,29 @@ import java.util.List;
 			
 			if (	   oldName.toLowerCase().contains(".jpg")
 					|| oldName.toLowerCase().contains(".jpeg")
-			//		|| oldName.toLowerCase().contains(".mpg")
-			//		|| oldName.toLowerCase().contains(".mpeg")
-			//		|| oldName.toLowerCase().contains(".avi")
-			//		|| oldName.toLowerCase().contains(".mp4")
+					|| oldName.toLowerCase().contains(".mpg")
+					|| oldName.toLowerCase().contains(".mpeg")
+					|| oldName.toLowerCase().contains(".avi")
+					|| oldName.toLowerCase().contains(".mp4")
+					|| oldName.toLowerCase().contains(".mov")
+					|| oldName.toLowerCase().contains(".wmv")
 					) {
 				
 				Path source = Paths.get(oldName);
 
 				File theDir;
 				Path target;
-				theDir = new File(mainPath + newName.substring(0, 4));
-				
+
+				if (newName.contains(".jpg")||newName.contains(".jpeg")) {
+					finalPath = mainPathPictures;
+				}else{
+					finalPath = mainPathVideos;
+				}
+
+
+				theDir = new File(finalPath + newName.substring(0, 4));
 				target = Paths.get(theDir + "\\" + newName);
+
 				if (!theDir.exists()) {
 					System.out.println("creating directory: " + theDir);
 					boolean result = theDir.mkdir();
@@ -146,7 +178,7 @@ import java.util.List;
 
 	public void logToFile(String content) {
 		try {
-			File file = new File(mainPath + "log.txt");
+			File file = new File(finalPath + "log.txt");
 			if (!file.exists()) {
 				file.createNewFile();
 			}
