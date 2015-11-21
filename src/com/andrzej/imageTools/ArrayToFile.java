@@ -18,7 +18,8 @@ import java.util.List;
 	public class ArrayToFile {
 	List<String> listImg = new ArrayList<>();
 	List<String> listImgNew = new ArrayList<>();
-	String destination;
+	String srcDrive;
+	String dstDrive;
 	String mainPathVideos;
 	String mainPathPictures;
 
@@ -29,10 +30,11 @@ import java.util.List;
 		//-Dmyvar String context = System.getProperty("myvar");
 
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		String directoryWindows = null;
+		String srcDirectory = null;
+		String dstDirectory = null;
 
 		try {
-			directoryWindows = args[0];
+			srcDirectory = args[0];
 		}catch (ArrayIndexOutOfBoundsException e){
 			System.out.println("Source directory must be provided!");
 			System.out.println("for example: java -jar ImagesOrganizer.jar D:\\MyImagesToOrganizeFolder C,D,E - provide only drive letter");
@@ -40,27 +42,40 @@ import java.util.List;
 		}
 
 		try {
-			listFilesUtil.setupDirectories(args[1]);
+			dstDirectory = args[1];
+			listFilesUtil.setupDirectories(dstDirectory, srcDirectory);
 		}catch (ArrayIndexOutOfBoundsException e){
 			System.out.println("Destination directory only 1st letter must be provided eg. C");
 			System.out.println("for example: java -jar ImagesOrganizer.jar D:\\MyImagesToOrganizeFolder C,D,E - provide only drive letter");
 			System.exit(1);
 		}
 
-		listFilesUtil.listFilesAndFilesSubDirectories(directoryWindows);
+
+		listFilesUtil.listFilesAndFilesSubDirectories(srcDirectory);
         listFilesUtil.listSort();
 		listFilesUtil.listAmount();
 		listFilesUtil.getData_old();
 
 	}
 
+	public void setupDirectories(String dstDir, String srcDir) {
+		srcDrive = srcDir.substring(0, 1);
+		dstDrive = dstDir.substring(0, 1);
+		mainPathVideos = dstDrive + "://VideoMigration//";
+		mainPathPictures = dstDrive + "://PhotoMigration//";
 
-
-	public void setupDirectories(String drive){
-		mainPathVideos = drive+"://VideoMigration//";
-		mainPathPictures = drive+"://PhotoMigration//";
+		File destDir;
+		destDir = new File(mainPathPictures);
+		if (!destDir.exists()) {
+			System.out.println("creating directory: " + destDir);
+			boolean result = destDir.mkdir();
+		}
+		destDir = new File(mainPathVideos);
+		if (!destDir.exists()) {
+			System.out.println("creating directory: " + destDir);
+			boolean result = destDir.mkdir();
+		}
 	}
-
 
 
 
@@ -105,7 +120,7 @@ import java.util.List;
 			Utils.percentCounter(i,listImg.size());
 
 			//System.out.println(oldName);
-            String s = (oldName.replaceAll("D:\\\\P.*\\\\", "").toLowerCase());
+            String s = (oldName.replaceAll(srcDrive+":\\\\P.*\\\\", "").toLowerCase());
 
 			String newName;
 			if(		  oldName.toLowerCase().contains(".mp4")
