@@ -17,8 +17,8 @@ public class HelloWorld {
 	}
 	
 private void getPath(){
-	File file = new File("");
-	String path = file.getAbsolutePath();
+	File file = new File("/home/andrzej/");
+	String path = file.getAbsolutePath().toString();
 	System.out.println(path);
 }
 

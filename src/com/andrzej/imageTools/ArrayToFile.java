@@ -18,20 +18,25 @@ import java.util.List;
 	public class ArrayToFile {
 	List<String> listImg = new ArrayList<>();
 	List<String> listImgNew = new ArrayList<>();
-	String mainPathVideos = "C://temp//";
-	String mainPathPictures = "C://temp//";
 	String finalPath;
+	String mainPathVideos;
+	String mainPathPictures;
+
 
 	public static void main(String[] args) throws IOException {
 
 		//-Dmyvar String context = System.getProperty("myvar");
 
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		String srcDirectory = "D://Pictures//test";
-		String dstDirectory = "";
+		String srcDirectory;// = "/media/andrzej/89E4-2578/";
+		String dstDirectory;// = "/home/andrzej";
 
-/*		try {
+		try {
 			srcDirectory = args[0];
+			File file = new File(srcDirectory);
+			String path = file.getAbsolutePath();
+            listFilesUtil.listFilesAndFilesSubDirectories(path);
+
 		}catch (ArrayIndexOutOfBoundsException e){
 			System.out.println("Source directory must be provided!");
 			System.out.println("for example: java -jar ImagesOrganizer.jar D:\\MyImagesToOrganizeFolder C,D,E - provide only drive letter");
@@ -40,32 +45,28 @@ import java.util.List;
 
 		try {
 			dstDirectory = args[1];
-			listFilesUtil.setupDirectories(dstDirectory, srcDirectory);
+			listFilesUtil.setupDirectories(dstDirectory);
 		}catch (ArrayIndexOutOfBoundsException e){
-			System.out.println("Destination directory only 1st letter must be provided eg. C");
+			System.out.println("Destination directory must be provided eg. C:\\");
 			System.out.println("for example: java -jar ImagesOrganizer.jar D:\\MyImagesToOrganizeFolder C,D,E - provide only drive letter");
 			System.exit(1);
 		}
-*/
 
-		File file = new File(srcDirectory);
-		String path = file.getAbsolutePath();
-		System.out.println(path);
+		//listFilesUtil.setupDirectories(dstDirectory);
 
-		listFilesUtil.listFilesAndFilesSubDirectories(path);
         listFilesUtil.listSort();
 		listFilesUtil.listAmount();
 		listFilesUtil.getData_old();
 
 	}
 
-	public void setupDirectories(String dstDir, String srcDir) {
-//		srcDrive = srcDir.substring(0, 1);
-//		dstDrive = dstDir.substring(0, 1);
-//		mainPathVideos = dstDrive + "://VideoMigration//";
-//		mainPathPictures = dstDrive + "://PhotoMigration//";
-		mainPathVideos = "//VideoMigration//";
-		mainPathPictures = "//PhotoMigration//";
+	public void setupDirectories(String dstDir) {
+
+		File file = new File(dstDir);
+		dstDir = file.getAbsolutePath();
+
+		mainPathVideos = dstDir + "/VideoMigration/";
+		mainPathPictures = dstDir + "/PhotoMigration/";
 
 
 		File destDir;
@@ -124,12 +125,9 @@ import java.util.List;
 
 			Utils.percentCounter(i,listImg.size());
 
-			System.out.println("oldName: "+oldName);
-			System.out.println("srcDrive: "+srcDrive);
 			System.out.println("oldName: "+path.getFileName().toString().toLowerCase());
 
-			String s = (srcDrive+ path.getFileName()).toString().toLowerCase();
-            //String s = (oldName.replaceAll(srcDrive+":\\\\P.*\\\\", "").toLowerCase());
+			String s = (path.getFileName()).toString().toLowerCase();
 
 			String newName;
 			if(		  oldName.toLowerCase().contains(".mp4")
@@ -228,7 +226,9 @@ import java.util.List;
 	public void logToFile(String content) {
 		try {
 			File file = new File(finalPath + "log.txt");
-			if (!file.exists()) file.createNewFile();
+			if (!file.exists()) {
+                file.createNewFile();
+            }
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(content);
