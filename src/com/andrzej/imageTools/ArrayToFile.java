@@ -21,19 +21,18 @@ import java.util.List;
 	String srcDrive;
 	String dstDrive;
 	String mainPathVideos;
-	String mainPathPictures;
-
-	String finalPath;
+	String mainPathPictures = "";
+	String finalPath = "";
 
 	public static void main(String[] args) throws IOException {
 
 		//-Dmyvar String context = System.getProperty("myvar");
 
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		String srcDirectory = null;
-		String dstDirectory = null;
+		String srcDirectory = "/home/andrzej/Pictures/";
+		String dstDirectory = "";
 
-		try {
+/*		try {
 			srcDirectory = args[0];
 		}catch (ArrayIndexOutOfBoundsException e){
 			System.out.println("Source directory must be provided!");
@@ -49,9 +48,13 @@ import java.util.List;
 			System.out.println("for example: java -jar ImagesOrganizer.jar D:\\MyImagesToOrganizeFolder C,D,E - provide only drive letter");
 			System.exit(1);
 		}
+*/
 
+		File file = new File(srcDirectory);
+		String path = file.getAbsolutePath();
+		System.out.println(path);
 
-		listFilesUtil.listFilesAndFilesSubDirectories(srcDirectory);
+		listFilesUtil.listFilesAndFilesSubDirectories(path);
         listFilesUtil.listSort();
 		listFilesUtil.listAmount();
 		listFilesUtil.getData_old();
@@ -59,10 +62,13 @@ import java.util.List;
 	}
 
 	public void setupDirectories(String dstDir, String srcDir) {
-		srcDrive = srcDir.substring(0, 1);
-		dstDrive = dstDir.substring(0, 1);
-		mainPathVideos = dstDrive + "://VideoMigration//";
-		mainPathPictures = dstDrive + "://PhotoMigration//";
+//		srcDrive = srcDir.substring(0, 1);
+//		dstDrive = dstDir.substring(0, 1);
+//		mainPathVideos = dstDrive + "://VideoMigration//";
+//		mainPathPictures = dstDrive + "://PhotoMigration//";
+		mainPathVideos = "//VideoMigration//";
+		mainPathPictures = "//PhotoMigration//";
+
 
 		File destDir;
 		destDir = new File(mainPathPictures);
@@ -102,7 +108,7 @@ import java.util.List;
 					||file.toString().toLowerCase().contains(".wmv")
 					||file.toString().toLowerCase().contains(".mov")
 			)) {
-				listImg.add(file.getAbsolutePath().toString());
+				listImg.add(file.getAbsolutePath());
 			} else if (file.isDirectory()) {
 				listFilesAndFilesSubDirectories(file.getAbsolutePath());
 			}
@@ -160,7 +166,7 @@ import java.util.List;
 	private void getData_old() throws IOException {
 		int i = 0;
 		for (String object : listImg) {
-			String msg = "";
+			String msg;
 
 			List<String> nameList = Arrays.asList(object.split(";"));
 			String oldName = nameList.get(1);
@@ -199,6 +205,9 @@ import java.util.List;
 					}
 				}
 
+				System.out.println("copying...");
+				System.out.println(target);
+				System.out.println(source);
 				if (!source.toString().toLowerCase().contains("FlipShare Data\\Previews")){
 					Files.copy(source, target ,REPLACE_EXISTING);	
 				}
@@ -213,9 +222,7 @@ import java.util.List;
 	public void logToFile(String content) {
 		try {
 			File file = new File(finalPath + "log.txt");
-			if (!file.exists()) {
-				file.createNewFile();
-			}
+			if (!file.exists()) file.createNewFile();
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(content);
