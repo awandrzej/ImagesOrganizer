@@ -18,18 +18,16 @@ import java.util.List;
 	public class ArrayToFile {
 	List<String> listImg = new ArrayList<>();
 	List<String> listImgNew = new ArrayList<>();
-	String srcDrive = "";
-	String dstDrive;
-	String mainPathVideos;
-	String mainPathPictures = "";
-	String finalPath = "";
+	String mainPathVideos = "C://temp//";
+	String mainPathPictures = "C://temp//";
+	String finalPath;
 
 	public static void main(String[] args) throws IOException {
 
 		//-Dmyvar String context = System.getProperty("myvar");
 
 		ArrayToFile listFilesUtil = new ArrayToFile();
-		String srcDirectory = "/home/andrzej/Pictures/";
+		String srcDirectory = "D://Pictures//test";
 		String dstDirectory = "";
 
 /*		try {
@@ -200,6 +198,8 @@ import java.util.List;
 
 				if (finalPath == null)finalPath="";
 
+				System.out.println("newName"+newName);
+				System.out.println("finalPath"+finalPath);
 				theDir = new File(finalPath + newName.substring(0, 4));
 				target = Paths.get(theDir + "/" + newName);
 
