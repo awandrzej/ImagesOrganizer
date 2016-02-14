@@ -18,7 +18,7 @@ import java.util.List;
 	public class ArrayToFile {
 	List<String> listImg = new ArrayList<>();
 	List<String> listImgNew = new ArrayList<>();
-	String srcDrive;
+	String srcDrive = "";
 	String dstDrive;
 	String mainPathVideos;
 	String mainPathPictures = "";
@@ -122,11 +122,16 @@ import java.util.List;
 		for (int i = 0; i < listImg.size() ; i++) {
 
 			String oldName = listImg.get(i);
+			Path path = Paths.get(oldName);
 
 			Utils.percentCounter(i,listImg.size());
 
-			//System.out.println(oldName);
-            String s = (oldName.replaceAll(srcDrive+":\\\\P.*\\\\", "").toLowerCase());
+			System.out.println("oldName: "+oldName);
+			System.out.println("srcDrive: "+srcDrive);
+			System.out.println("oldName: "+path.getFileName());
+
+			String s = (srcDrive+ path.getFileName());
+            //String s = (oldName.replaceAll(srcDrive+":\\\\P.*\\\\", "").toLowerCase());
 
 			String newName;
 			if(		  oldName.toLowerCase().contains(".mp4")
@@ -143,7 +148,7 @@ import java.util.List;
 			}
 
             newName = newName.replace(" ", "_");
-			//System.out.println(newName);
+			System.out.println("newName: " +newName);
 
 			if (Collections.frequency(listImgNew, newName)>0) {
 				newName = newName.replace(".jpg","_"+Integer.toString(Collections.frequency(listImgNew, newName))+".jpg");
@@ -193,9 +198,10 @@ import java.util.List;
 					finalPath = mainPathVideos;
 				}
 
+				if (finalPath == null)finalPath="";
 
 				theDir = new File(finalPath + newName.substring(0, 4));
-				target = Paths.get(theDir + "\\" + newName);
+				target = Paths.get(theDir + "/" + newName);
 
 				if (!theDir.exists()) {
 					System.out.println("creating directory: " + theDir);
