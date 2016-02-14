@@ -128,9 +128,9 @@ import java.util.List;
 
 			System.out.println("oldName: "+oldName);
 			System.out.println("srcDrive: "+srcDrive);
-			System.out.println("oldName: "+path.getFileName());
+			System.out.println("oldName: "+path.getFileName().toString().toLowerCase());
 
-			String s = (srcDrive+ path.getFileName());
+			String s = (srcDrive+ path.getFileName()).toString().toLowerCase();
             //String s = (oldName.replaceAll(srcDrive+":\\\\P.*\\\\", "").toLowerCase());
 
 			String newName;
